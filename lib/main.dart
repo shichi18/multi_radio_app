@@ -1,23 +1,26 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:multi_radio_app/webview_page.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import 'radio_data.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: WebViewPage());
+      title: 'Radio App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: WebViewPage(),
+    );
   }
 }
 
@@ -27,70 +30,37 @@ class WebViewPage extends StatelessWidget {
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
 
     return MaterialApp(
-      home: DefaultTabController(
-        length: 4,
-        child: Scaffold(
-          appBar: AppBar(
-            flexibleSpace: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TabBar(
-                  tabs: [
-                    Tab(icon: Icon(Icons.radio)),
-                    Tab(
-                      text: '超A&G',
-                    ),
-                    Tab(
-                      text: '音泉',
-                    ),
-                    Tab(
-                      text: '響',
-                    ),
-                  ],
-                ),
-              ],
+      home: Scaffold(
+        appBar: AppBar(
+          title: Icon(Icons.topic),
+        ),
+        body: Column(
+          children: [
+            ListTile(
+              title: Icon(Icons.radio),
             ),
-          ),
-          body: TabBarView(
-            children: [
-              Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'ラジオ まとめ',
-                        style: TextStyle(fontSize: 28),
-                      ),
-                    ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('超A&G'),
-                        Text('音泉'),
-                        Text('響'),
-                      ],
-                    ),
-
-                  ],
-                ),
+            Divider(),
+            Expanded(
+              child: ListView.separated(
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    title: Text(radioDataList[index].title, style: TextStyle(fontSize: 18)),
+                    subtitle: Text(radioDataList[index].url),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => WebViewPages(radioData: radioDataList[index])),
+                      );
+                    },
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return Divider();
+                },
+                itemCount: radioDataList.length,
               ),
-              WebView(
-                initialUrl: 'https://www.uniqueradio.jp/agplayer5/player.php',
-                javascriptMode: JavascriptMode.unrestricted,
-              ),
-              WebView(
-                initialUrl: 'https://www.onsen.ag/',
-                javascriptMode: JavascriptMode.unrestricted,
-              ),
-              WebView(
-                initialUrl: 'https://hibiki-radio.jp/',
-                javascriptMode: JavascriptMode.unrestricted,
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

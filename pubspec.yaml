@@ -1,5 +1,5 @@
 name: multi_radio_app
-description: A new Flutter application.
+description: A radio app with a collection of voice actor radios.
 
 version: 1.0.0+1
 
@@ -10,8 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.2
-  webview_flutter: ^2.0.2 #https://pub.dev/packages/webview_flutter
+  cupertino_icons: ^1.0.3 #https://pub.dev/packages/cupertino_icons
+  webview_flutter: ^2.0.8 #https://pub.dev/packages/webview_flutter
 
 dev_dependencies:
   flutter_test:
